@@ -36,8 +36,8 @@ fun CalculetteScreen() {
                 listOf("7", "8", "9", "/"),
                 listOf("4", "5", "6", "*"),
                 listOf("1", "2", "3", "-"),
-                listOf("0", ".", "=", "+"),
-                listOf("C")
+                listOf("0", ".", "C", "+"),
+                listOf("=")
             )
 
             buttons.forEach { row ->
