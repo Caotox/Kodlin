@@ -13,7 +13,7 @@ import com.example.firebase.ui.theme.FirebaseTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent
+        setContent {
             FirebaseTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),

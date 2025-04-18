@@ -1,4 +1,4 @@
-package com.example.masuperappfirebase.ui.screens
+package com.example.firebase.ui.main
 
 import android.os.SystemClock
 import androidx.compose.foundation.layout.*

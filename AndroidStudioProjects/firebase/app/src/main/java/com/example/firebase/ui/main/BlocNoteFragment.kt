@@ -1,4 +1,4 @@
-package com.example.applicationkotlin.screens
+package com.example.firebase.ui.main
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.firebase.database.*
-
+/*
 @Composable
 fun BlocNotesScreen() {
     val database = FirebaseDatabase.getInstance().getReference("notes")
@@ -83,3 +83,4 @@ fun BlocNotesScreen() {
         }
     }
 }
+*/

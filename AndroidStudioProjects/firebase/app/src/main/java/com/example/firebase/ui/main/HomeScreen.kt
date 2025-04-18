@@ -12,6 +12,16 @@ import com.google.firebase.auth.FirebaseUser
 import androidx.compose.runtime.remember // Pour remember
 import com.google.firebase.database.DatabaseReference // Pour le type de la référence
 import com.google.firebase.database.FirebaseDatabase // Pour obtenir l'instance BDD
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.fragment
+import androidx.navigation.navOptions
+import androidx.navigation.plusAssign
+import androidx.navigation.createGraph
+import androidx.navigation.findNavController
+import androidx.fragment.app.FragmentContainerView
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import com.example.firebase.ui.main.RealtimeDatabaseSection
 private const val URL_RTDB = "https://fir-appforproject-default-rtdb.europe-west1.firebasedatabase.app/"
 @Composable
@@ -84,5 +94,5 @@ fun HomeScreen(user: FirebaseUser, onLogout: () -> Unit) {
     }
 }
 object ViewID {
-    const val navHost = 123456 
+    const val navHost = 123456
 }

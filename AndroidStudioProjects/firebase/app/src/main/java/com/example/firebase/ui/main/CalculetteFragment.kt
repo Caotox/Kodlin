@@ -1,4 +1,4 @@
-package com.example.applicationkotlin
+package com.example.firebase.ui.main
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
