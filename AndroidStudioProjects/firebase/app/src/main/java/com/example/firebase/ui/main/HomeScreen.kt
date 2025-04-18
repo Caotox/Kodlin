@@ -20,7 +20,9 @@ fun HomeScreen(user: FirebaseUser, onLogout: () -> Unit) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "home") {
-        composable("home") { HomeMenuScreen(navController = navController) }
+        composable("home") {
+            HomeMenuScreen(navController = navController, onLogout = onLogout)
+        }
         composable("minuteur") { MinuteurScreen(navController = navController) }
         composable("calculette") { CalculetteScreen(navController) }
         composable("chrono") { ChronoScreen(navController = navController) }
