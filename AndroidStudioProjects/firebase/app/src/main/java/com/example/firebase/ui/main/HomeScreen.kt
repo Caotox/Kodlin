@@ -16,6 +16,33 @@ import com.example.firebase.ui.main.RealtimeDatabaseSection
 private const val URL_RTDB = "https://fir-appforproject-default-rtdb.europe-west1.firebasedatabase.app/"
 @Composable
 fun HomeScreen(user: FirebaseUser, onLogout: () -> Unit) {
+    lateinit var navController: NavController
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Création programmatique du FragmentContainerView
+        val navHostFragment = FragmentContainerView(this).apply {
+            id = ViewID.navHost
+            layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+        }
+        setContentView(navHostFragment)
+
+        // Création du NavController avec une navGraph 100 % Kotlin
+        val navHost = NavHostFragment.create(R.navigation.nav_graph)
+        supportFragmentManager.beginTransaction()
+            .replace(ViewID.navHost, navHost)
+            .setPrimaryNavigationFragment(navHost)
+            .commitNow()
+
+        navController = navHost.navController
+        navController.graph = navController.createGraph(startDestination = "home") {
+            fragment<HomeFragment>("home")
+            fragment<MinuteurFragment>("minuteur")
+            fragment<CalculetteFragment>("calculette")
+            fragment<ChronometreFragment>("chrono")
+        }
+    }
     val userMessageRef: DatabaseReference = remember(user.uid) {
         FirebaseDatabase.getInstance(URL_RTDB) // Utilise la constante URL
             .getReference("userMessages")
@@ -55,4 +82,7 @@ fun HomeScreen(user: FirebaseUser, onLogout: () -> Unit) {
             Text("Se déconnecter")
         }
     }
+}
+object ViewID {
+    const val navHost = 123456 
 }

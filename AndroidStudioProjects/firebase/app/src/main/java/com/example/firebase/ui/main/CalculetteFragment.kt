@@ -1,4 +1,4 @@
-package com.example.androidstudioprojects
+package com.example.applicationkotlin
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
