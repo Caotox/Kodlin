@@ -1,145 +1,135 @@
-package com.example.firebase.ui.main
+// Fichier: RealtimeDatabaseSection.kt
+/*
+package com.example.masuperappfirebase.ui.main // Assurez-vous que le package est correct
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
+/**
+ * Composable dédié à l'affichage et à l'interaction avec
+ * la section message de la Realtime Database pour une référence donnée.
+ *
+ * @param userMessageReference La DatabaseReference pointant spécifiquement
+ *                             vers le nœud 'message' de l'utilisateur actuel.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BlocNoteScreen(navController: NavController) {
-    val currentUser = FirebaseAuth.getInstance().currentUser
-    if (currentUser == null) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text("Veuillez vous connecter pour utiliser le bloc-notes.")
-        }
-        return
-    }
+fun RealtimeDatabaseSection(
+    userMessageReference: DatabaseReference // Reçoit la référence comme paramètre
+) {
+    // --- États locaux pour ce composant ---
+    var messageInput by remember { mutableStateOf("") }
+    var messageFromDb by remember { mutableStateOf<String?>("Chargement...") }
+    var isSaving by remember { mutableStateOf(false) }
+    var dbError by remember { mutableStateOf<String?>(null) }
 
-    val database = FirebaseDatabase.getInstance().getReference("notes/${currentUser.uid}")
-    var noteText by remember { mutableStateOf("") }
-    var notesList by remember { mutableStateOf(listOf<Note>()) }
-    var showConfirmation by remember { mutableStateOf(false) }
+    // Scope Coroutine local
+    val coroutineScope = rememberCoroutineScope()
 
-    // Récupération des notes en temps réel
-    LaunchedEffect(Unit) {
-        database.addValueEventListener(object : ValueEventListener {
+    // --- Lire les données RTDB en temps réel ---
+    // L'effet dépend maintenant de la référence passée en paramètre
+    DisposableEffect(userMessageReference) {
+        val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val notes = snapshot.children.mapNotNull {
-                    it.getValue(Note::class.java)
-                }
-                notesList = notes
-                Log.d("BlocNotes", "Notes chargées : $notes")
+                val message = snapshot.getValue(String::class.java)
+                messageFromDb = message
+                dbError = null
+                Log.d("RTDBSection", "Data received for ref: ${snapshot.ref}")
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e("BlocNotes", "Erreur chargement : ${error.message}")
-            }
-        })
-    }
-
-    Scaffold(
-        topBar = { TopAppBar(title = { Text("Bloc-notes Firebase") }) }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                OutlinedTextField(
-                    value = noteText,
-                    onValueChange = { noteText = it },
-                    label = { Text("Nouvelle note") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(Modifier.height(8.dp))
-
-                Button(
-                    onClick = {
-                        val id = database.push().key ?: return@Button
-                        val note = Note(id, noteText)
-                        database.child(id).setValue(note)
-                        noteText = ""
-                        showConfirmation = true
-                        Log.d("BlocNotes", "Note ajoutée manuellement : $note")
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Ajouter la note")
-                }
-
-                if (showConfirmation) {
-                    Text(
-                        text = "Note ajoutée avec succès !",
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(top = 8.dp)
-                    )
-                }
-
-                Spacer(Modifier.height(16.dp))
-
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
-                    items(notesList) { note ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp),
-                            elevation = CardDefaults.cardElevation(4.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .padding(12.dp)
-                                    .fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(note.content)
-                                IconButton(onClick = {
-                                    database.child(note.id).removeValue()
-                                }) {
-                                    Icon(Icons.Filled.Delete, contentDescription = "Supprimer")
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Bouton retour
-            Button(
-                onClick = { navController.navigate("home") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp)
-            ) {
-                Text("Retour")
+                Log.e("RTDBSection", "Database read failed for ref ${userMessageReference.toString()}: ${error.message}", error.toException())
+                messageFromDb = null
+                dbError = "Erreur lecture BDD: ${error.message}"
             }
         }
-    }
-}
+        Log.d("RTDBSection", "Adding ValueEventListener for path: ${userMessageReference.toString()}")
+        userMessageReference.addValueEventListener(listener)
 
-// Doit être en-dehors de la fonction BlocNoteScreen
-data class Note(var id: String = "", var content: String = "")
+        onDispose {
+            Log.d("RTDBSection", "Removing ValueEventListener for path: ${userMessageReference.toString()}")
+            userMessageReference.removeEventListener(listener)
+        }
+    }
+
+    // --- Interface Utilisateur de la Section RTDB ---
+    Column(
+        modifier = Modifier.fillMaxWidth(), // Prend toute la largeur disponible
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Realtime Database", style = MaterialTheme.typography.titleMedium)
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (dbError != null) {
+            Text(dbError!!, color = MaterialTheme.colorScheme.error)
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        Text("Message enregistré:")
+        Text(
+            text = messageFromDb ?: "(Aucun message)",
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = messageInput,
+            onValueChange = { messageInput = it },
+            label = { Text("Nouveau message") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(
+            onClick = {
+                if (messageInput.isBlank()) return@Button
+                isSaving = true
+                dbError = null
+                coroutineScope.launch {
+                    try {
+                        // Utilise la référence passée en paramètre
+                        userMessageReference.setValue(messageInput).await()
+                        Log.d("RTDBSection", "Message saved successfully to ${userMessageReference.toString()}!")
+                        messageInput = ""
+                    } catch (e: Exception) {
+                        Log.e("RTDBSection", "Failed to save message to ${userMessageReference.toString()}", e)
+                        dbError = "Erreur sauvegarde: ${e.localizedMessage}"
+                    } finally {
+                        isSaving = false
+                    }
+                }
+            },
+            enabled = !isSaving
+        ) {
+            if (isSaving) {
+                CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp)
+            } else {
+                Text("Sauvegarder Message")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text("🚨 N'oubliez pas les règles de sécurité RTDB !", style = MaterialTheme.typography.labelSmall)
+    }
+    Button(onClick = { navController.navigate("home") }) {
+        Text("Retour")
+    }
+}*/

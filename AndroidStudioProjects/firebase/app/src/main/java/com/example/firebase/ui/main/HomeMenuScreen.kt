@@ -19,20 +19,22 @@ fun HomeMenuScreen(navController: NavHostController, onLogout: () -> Unit) {
         verticalArrangement = Arrangement.Center
     ) {
         Button(onClick = { navController.navigate("minuteur") }) {
-            Text("Minuteur")
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = { navController.navigate("calculette") }) {
             Text("Chronomètre")
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = { navController.navigate("chrono") }) {
+        Button(onClick = { navController.navigate("calculette") }) {
             Text("Calculette")
         }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(onClick = { navController.navigate("chrono") }) {
+            Text("Minuteur")
+        }
+        /*
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = { navController.navigate("bloc") }) {
             Text("Bloc Notes")
         }
+         */
         Spacer(modifier = Modifier.height(32.dp))
         Button(
             onClick = { onLogout() },

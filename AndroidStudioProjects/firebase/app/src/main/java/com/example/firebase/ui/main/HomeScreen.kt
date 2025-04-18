@@ -26,7 +26,7 @@ fun HomeScreen(user: FirebaseUser, onLogout: () -> Unit) {
         composable("minuteur") { MinuteurScreen(navController = navController) }
         composable("calculette") { CalculetteScreen(navController) }
         composable("chrono") { ChronoScreen(navController = navController) }
-        composable("bloc") { BlocNoteScreen(navController = navController) }
+        //composable("bloc") { BlocNoteScreen(userMessageReference= FirebaseDatabase.getInstance("").getReference("notes/${currentUser.uid}"), navController = navController) }
     }
 
 }
