@@ -3,16 +3,34 @@ package com.example.firebase.ui.main
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-/*
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BlocNotesScreen() {
-    val database = FirebaseDatabase.getInstance().getReference("notes")
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    if (currentUser == null) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text("Veuillez vous connecter pour utiliser le bloc-notes.")
+        }
+        return
+    }
+
+    data class Note(var id: String = "", var content: String = "")
+
+    val database = FirebaseDatabase.getInstance().getReference("notes/${currentUser.uid}")
     var noteText by remember { mutableStateOf("") }
     var notesList by remember { mutableStateOf(listOf<Note>()) }
 
@@ -74,7 +92,7 @@ fun BlocNotesScreen() {
                         ) {
                             Text(note.content)
                             IconButton(onClick = { database.child(note.id).removeValue() }) {
-                                Icon(Icons.Default.Delete, contentDescription = "Supprimer")
+                                Icon(Icons.Filled.Delete, contentDescription = "Supprimer")
                             }
                         }
                     }
@@ -83,4 +101,3 @@ fun BlocNotesScreen() {
         }
     }
 }
-*/
