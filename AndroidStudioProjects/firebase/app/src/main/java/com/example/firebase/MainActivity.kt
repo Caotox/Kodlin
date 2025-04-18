@@ -3,23 +3,25 @@ package com.example.firebase
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import com.example.firebase.navigation.AuthNavigator
-import com.example.firebase.ui.theme.FirebaseTheme
+import androidx.navigation.compose.rememberNavController
+import com.example.firebase.ui.auth.AuthNavHost
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val auth = FirebaseAuth.getInstance()
+
         setContent {
-            FirebaseTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    AuthNavigator()
+            MaterialTheme {
+                Surface {
+                    val navController = rememberNavController()
+                    AuthNavHost(
+                        navController = navController,
+                        auth = auth
+                    )
                 }
             }
         }
