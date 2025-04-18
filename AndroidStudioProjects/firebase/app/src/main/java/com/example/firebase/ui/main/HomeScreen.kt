@@ -9,9 +9,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.FirebaseUser
-
+import androidx.compose.runtime.remember // Pour remember
+import com.google.firebase.database.DatabaseReference // Pour le type de la référence
+import com.google.firebase.database.FirebaseDatabase // Pour obtenir l'instance BDD
+import com.example.firebase.ui.main.RealtimeDatabaseSection
+private const val URL_RTDB = "https://fir-appforproject-default-rtdb.europe-west1.firebasedatabase.app/"
 @Composable
 fun HomeScreen(user: FirebaseUser, onLogout: () -> Unit) {
+    val userMessageRef: DatabaseReference = remember(user.uid) {
+        FirebaseDatabase.getInstance(URL_RTDB) // Utilise la constante URL
+            .getReference("userMessages")
+            .child(user.uid)
+            .child("message")
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -34,6 +45,8 @@ fun HomeScreen(user: FirebaseUser, onLogout: () -> Unit) {
             text = "UID: ${user.uid}",
             style = MaterialTheme.typography.bodySmall
         )
+        Spacer(modifier = Modifier.height(24.dp)) // Ajusté le Spacer
+        RealtimeDatabaseSection(userMessageReference = userMessageRef)
 
         Spacer(modifier = Modifier.weight(1f)) // Pousse le bouton en bas
 
