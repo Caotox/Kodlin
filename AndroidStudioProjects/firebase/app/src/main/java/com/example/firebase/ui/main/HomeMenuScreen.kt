@@ -28,5 +28,9 @@ fun HomeMenuScreen(navController: NavController) {
         Button(onClick = { navController.navigate("chrono") }) {
             Text("Chronomètre")
         }
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { navController.navigate("bloc") }) {
+            Text("Bloc Notes")
+        }
     }
 }

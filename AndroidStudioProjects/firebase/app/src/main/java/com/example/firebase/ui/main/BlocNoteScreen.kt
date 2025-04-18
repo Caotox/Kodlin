@@ -10,12 +10,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BlocNotesScreen() {
+fun BlocNoteScreen(navController: NavController) {
     val currentUser = FirebaseAuth.getInstance().currentUser
     if (currentUser == null) {
         Column(
@@ -97,7 +98,11 @@ fun BlocNotesScreen() {
                         }
                     }
                 }
+
             }
+        }
+        Button(onClick = { navController.navigate("home") }) {
+            Text("Retour")
         }
     }
 }

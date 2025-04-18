@@ -24,6 +24,7 @@ fun HomeScreen(user: FirebaseUser, onLogout: () -> Unit) {
         composable("minuteur") { MinuteurScreen(navController = navController) }
         composable("calculette") { CalculetteScreen(navController) }
         composable("chrono") { ChronoScreen(navController = navController) }
+        composable("bloc") { BlocNoteScreen(navController = navController) }
     }
 
 }
