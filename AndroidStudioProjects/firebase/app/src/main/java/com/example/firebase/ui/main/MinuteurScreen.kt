@@ -63,7 +63,7 @@ fun MinuteurScreen(modifier: Modifier = Modifier) {
                 elapsedTime = 0L
                 laps = emptyList()
             }) {
-                Text("Reset")
+                Text("Cancel")
             }
 
             Button(onClick = {
