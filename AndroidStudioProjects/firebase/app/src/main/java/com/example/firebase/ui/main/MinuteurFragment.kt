@@ -91,7 +91,7 @@ private fun formatTime(ms: Long): String {
     val millis = (ms % 1000) % 1000 / 10
     return String.format("%02d:%02d.%02d", minutes, seconds, millis)
 }
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun ChronoScreenPreview() {
@@ -99,3 +99,4 @@ fun ChronoScreenPreview() {
         ChronoScreen()
     }
 }
+*/

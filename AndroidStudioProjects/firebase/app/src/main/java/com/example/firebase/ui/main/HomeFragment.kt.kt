@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
-class HomeFragment : Fragment() {
+class `HomeFragment.kt` : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val layout = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.VERTICAL

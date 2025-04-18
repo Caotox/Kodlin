@@ -9,20 +9,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.FirebaseUser
-import androidx.compose.runtime.remember // Pour remember
-import com.google.firebase.database.DatabaseReference // Pour le type de la référence
-import com.google.firebase.database.FirebaseDatabase // Pour obtenir l'instance BDD
-import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.remember 
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.fragment
-import androidx.navigation.navOptions
-import androidx.navigation.plusAssign
 import androidx.navigation.createGraph
-import androidx.navigation.findNavController
 import androidx.fragment.app.FragmentContainerView
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import com.example.firebase.ui.main.RealtimeDatabaseSection
+
 private const val URL_RTDB = "https://fir-appforproject-default-rtdb.europe-west1.firebasedatabase.app/"
 @Composable
 fun HomeScreen(user: FirebaseUser, onLogout: () -> Unit) {
@@ -47,10 +43,10 @@ fun HomeScreen(user: FirebaseUser, onLogout: () -> Unit) {
 
         navController = navHost.navController
         navController.graph = navController.createGraph(startDestination = "home") {
-            fragment<HomeFragment>("home")
+            fragment<`HomeFragment.kt`>("home")
             fragment<MinuteurFragment>("minuteur")
             fragment<CalculetteFragment>("calculette")
-            fragment<ChronometreFragment>("chrono")
+            //fragment<ChronometreFragment>("chrono")
         }
     }
     val userMessageRef: DatabaseReference = remember(user.uid) {
