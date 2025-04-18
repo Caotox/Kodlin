@@ -7,10 +7,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import net.objecthunter.exp4j.ExpressionBuilder
+import androidx.navigation.NavController
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalculetteScreen() {
+fun CalculetteScreen(navController: NavController) {
     var expression by remember { mutableStateOf("") }
     var result by remember { mutableStateOf("") }
 
@@ -74,6 +76,9 @@ fun CalculetteScreen() {
                         }
                     }
                 }
+            }
+            Button(onClick = { navController.navigate("home") }) {
+                Text("Retour")
             }
         }
     }

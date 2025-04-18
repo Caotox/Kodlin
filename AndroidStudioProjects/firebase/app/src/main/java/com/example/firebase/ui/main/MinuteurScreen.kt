@@ -12,9 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
+import androidx.navigation.NavController
+
 
 @Composable
-fun MinuteurScreen(modifier: Modifier = Modifier) {
+fun MinuteurScreen(modifier: Modifier = Modifier, navController: NavController) {
     var isRunning by remember { mutableStateOf(false) }
     var startTime by remember { mutableStateOf(0L) }
     var timeBuffer by remember { mutableStateOf(0L) }
@@ -79,6 +81,10 @@ fun MinuteurScreen(modifier: Modifier = Modifier) {
             items(laps) { lap ->
                 Text(text = lap, style = MaterialTheme.typography.bodyLarge)
             }
+
+        }
+        Button(onClick = { navController.navigate("home") }) {
+            Text("Retour")
         }
     }
 }

@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.sp
 //import com.example.timer.ui.theme.TimerTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.navigation.NavController
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +49,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ChronoScreen(modifier: Modifier = Modifier) {
+fun ChronoScreen(modifier: Modifier = Modifier, navController: NavController) {
     var selectedMinutes by remember { mutableStateOf(2) }
     var selectedSeconds by remember { mutableStateOf(30) }
     var timeInSeconds by remember { mutableStateOf(0) }
@@ -161,6 +163,9 @@ fun ChronoScreen(modifier: Modifier = Modifier) {
                 )
             ) {
                 Text("Reset")
+            }
+            Button(onClick = { navController.navigate("home") }) {
+                Text("Retour")
             }
         }
     }

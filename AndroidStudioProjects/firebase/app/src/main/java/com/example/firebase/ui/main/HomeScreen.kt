@@ -19,11 +19,11 @@ private const val URL_RTDB = "https://fir-appforproject-default-rtdb.europe-west
 fun HomeScreen(user: FirebaseUser, onLogout: () -> Unit) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "homeMenu") {
-        composable("homeMenu") { HomeMenuScreen(navController) }
-        composable("minuteur") { MinuteurScreen() }
-        composable("calculette") { CalculetteScreen() }
-        composable("chrono") { ChronoScreen() }
+    NavHost(navController = navController, startDestination = "home") {
+        composable("home") { HomeMenuScreen(navController = navController) }
+        composable("minuteur") { MinuteurScreen(navController = navController) }
+        composable("calculette") { CalculetteScreen(navController) }
+        composable("chrono") { ChronoScreen(navController = navController) }
     }
 
 }
