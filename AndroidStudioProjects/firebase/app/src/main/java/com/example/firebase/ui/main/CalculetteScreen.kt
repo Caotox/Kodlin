@@ -10,7 +10,7 @@ import net.objecthunter.exp4j.ExpressionBuilder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalculatorApp() {
+fun CalculetteScreen() {
     var expression by remember { mutableStateOf("") }
     var result by remember { mutableStateOf("") }
 

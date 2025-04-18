@@ -10,13 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.masuperappfirebase.ui.theme.MaSuperAppFirebaseTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun ChronoScreen(modifier: Modifier = Modifier) {
+fun MinuteurScreen(modifier: Modifier = Modifier) {
     var isRunning by remember { mutableStateOf(false) }
     var startTime by remember { mutableStateOf(0L) }
     var timeBuffer by remember { mutableStateOf(0L) }
@@ -91,12 +89,3 @@ private fun formatTime(ms: Long): String {
     val millis = (ms % 1000) % 1000 / 10
     return String.format("%02d:%02d.%02d", minutes, seconds, millis)
 }
-/*
-@Preview(showBackground = true)
-@Composable
-fun ChronoScreenPreview() {
-    MaSuperAppFirebaseTheme {
-        ChronoScreen()
-    }
-}
-*/

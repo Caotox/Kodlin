@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,10 +24,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.timer.ui.theme.TimerTheme
+//import com.example.timer.ui.theme.TimerTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -37,19 +35,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            TimerTheme {
+            /*TimerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     TimerScreen(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
-            }
+            }*/
         }
     }
 }
 
 @Composable
-fun TimerScreen(modifier: Modifier = Modifier) {
+fun ChronoScreen(modifier: Modifier = Modifier) {
     var selectedMinutes by remember { mutableStateOf(2) }
     var selectedSeconds by remember { mutableStateOf(30) }
     var timeInSeconds by remember { mutableStateOf(0) }
