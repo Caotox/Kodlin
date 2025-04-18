@@ -30,15 +30,12 @@ fun BlocNoteScreen(navController: NavController) {
         return
     }
 
-    //Modèle de note avec valeurs par défaut pour Firebase
-    data class Note(var id: String = "", var content: String = "")
-
     val database = FirebaseDatabase.getInstance().getReference("notes/${currentUser.uid}")
     var noteText by remember { mutableStateOf("") }
     var notesList by remember { mutableStateOf(listOf<Note>()) }
     var showConfirmation by remember { mutableStateOf(false) }
 
-    //Récupération en temps réel des notes existantes (y compris après relance)
+    // Récupération des notes en temps réel
     LaunchedEffect(Unit) {
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -83,6 +80,7 @@ fun BlocNoteScreen(navController: NavController) {
                         database.child(id).setValue(note)
                         noteText = ""
                         showConfirmation = true
+                        Log.d("BlocNotes", "Note ajoutée manuellement : $note")
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -91,7 +89,7 @@ fun BlocNoteScreen(navController: NavController) {
 
                 if (showConfirmation) {
                     Text(
-                        text = "✅ Note ajoutée avec succès !",
+                        text = "Note ajoutée avec succès !",
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 8.dp)
                     )
@@ -99,7 +97,11 @@ fun BlocNoteScreen(navController: NavController) {
 
                 Spacer(Modifier.height(16.dp))
 
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
                     items(notesList) { note ->
                         Card(
                             modifier = Modifier
@@ -126,7 +128,7 @@ fun BlocNoteScreen(navController: NavController) {
                 }
             }
 
-            //Bouton retour bien visible
+            // Bouton retour
             Button(
                 onClick = { navController.navigate("home") },
                 modifier = Modifier
@@ -138,3 +140,6 @@ fun BlocNoteScreen(navController: NavController) {
         }
     }
 }
+
+// Doit être en-dehors de la fonction BlocNoteScreen
+data class Note(var id: String = "", var content: String = "")
