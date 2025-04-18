@@ -100,9 +100,9 @@ fun BlocNoteScreen(navController: NavController) {
                 }
 
             }
-        }
-        Button(onClick = { navController.navigate("home") }) {
-            Text("Retour")
+            Button(onClick = { navController.navigate("home") }) {
+                Text("Retour")
+            }
         }
     }
 }
